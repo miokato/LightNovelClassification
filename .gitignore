@@ -17,4 +17,5 @@ tests/report
 .idea/
 *.swp
 migrations
+data/
 
