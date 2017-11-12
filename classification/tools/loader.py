@@ -3,7 +3,6 @@ from collections import defaultdict
 import requests
 from bs4 import BeautifulSoup
 import os
-import json
 import re
 
 
@@ -144,7 +143,8 @@ class FetchBook:
                 soup = BeautifulSoup(html, 'html.parser')
                 book.title = soup.title.text
                 book.ncode = book_info.ncode
-                book.chapters.append(soup.get_text())
+                body = soup.find('div', id='novel_honbun')
+                book.chapters.append(body.text)
             books.append(book)
         return books
 
