@@ -99,6 +99,12 @@ class BookManager:
                 with open(file, 'wt') as f:
                     f.write(chapter)
 
+    def load(self, category):
+        category = os.path.join(self.base_path, category)
+        for root, dirs, files in os.walk(category):
+            for file in files:
+                yield os.path.join(root, file)
+
 
 class FetchBook:
     def __init__(self):
@@ -151,13 +157,15 @@ class FetchBook:
 
 if __name__ == '__main__':
     query = NovelQuery()
-    query.category = '異世界'
-    query.novel_cnt_limit = 5
-    query.char_cnt_min = 4000
-    query.char_cnt_max = 5000
-    url = query.create_url()
-    manager = BookManager()
-    books = manager.fetch_books(url, query.category_num)
-    manager.save(books)
+    categories = ['異世界', '現実世界', 'ハイファンタジー', '純文学']
+    for category in categories:
+        query.category = category
+        query.novel_cnt_limit = 200
+        query.char_cnt_min = 2000
+        query.char_cnt_max = 6000
+        url = query.create_url()
+        manager = BookManager()
+        books = manager.fetch_books(url, query.category_num)
+        manager.save(books)
 
 

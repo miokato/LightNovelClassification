@@ -1,4 +1,5 @@
 from classification.tools.parser import CabochaParser, JumanParser
+from classification.tools.loader import BookManager
 
 
 class MessageManager:
@@ -15,9 +16,11 @@ class MessageManager:
 
 
 if __name__ == '__main__':
-    t = """
-    ライトノベルとその他の小説の境界は曖昧であり、はっきりとした定義を持たないことから、「ライトノベルの定義」についてさまざまな説がある。ライトノベルを発行しているレーベルから出ている、出版社がその旨宣言した作品、マンガ・萌え絵のイラストレーション、挿絵を多用し、登場人物のキャラクターイメージや世界観設定を予め固定化している、キャラクターを中心として作られている、青少年（あるいは若年層）を読者層に想定して執筆されている、作者が自称する、など、様々な定義が作られた[2][3]が、いずれも客観的な定義にはなっていない。
-    """
-    manager = MessageManager(parser='cabocha')
-    message = manager.extract_message(t)
-    print(message.bags)
+    file_manager = BookManager()
+    files = file_manager.load('305')
+    for file in files:
+        with open(file, 'rt') as f:
+            data = f.read()
+        parse_manager = MessageManager(parser='cabocha')
+        message = parse_manager.extract_message(data)
+        print(message.bags)
