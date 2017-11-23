@@ -9,6 +9,16 @@ from .sentence import Sentence
 from pyknp import Jumanpp
 
 
+class MessageManager:
+    def __init__(self, parser):
+        self.parser = parser
+
+    def extract_message(self, text):
+        message = self.parser.parse_message(text)
+        message = self.parser.parse(message)
+        return message
+
+
 class Parser:
     def __init__(self):
         split_pattern = r'。|？|\?|！|\!|\n'
@@ -51,7 +61,7 @@ class CabochaParser(Parser):
     def create_bags(sent):
         bag = []
         for token in sent.tree.tokens:
-            if token.pos == '名詞':
+            if token.pos == '名詞' or token.pos == '動詞':
                 bag.append(token.surface)
         return bag
 
@@ -114,3 +124,5 @@ class LSI:
         sims = self.index[vec_lsi]
         sims = sorted(enumerate(sims), key=lambda item: -item[1])
         return sims
+
+
