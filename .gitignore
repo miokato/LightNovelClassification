@@ -20,4 +20,5 @@ migrations
 data/
 static/
 sample.ipynb
+sample.py
 
