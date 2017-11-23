@@ -19,4 +19,5 @@ tests/report
 migrations
 data/
 static/
+sample.ipynb
 
