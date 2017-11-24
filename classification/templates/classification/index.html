@@ -1,15 +1,23 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>LightNovelClassification</title>
-    {% load static %}
-    <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
-    <script src="{% static 'classification/js/sample.js' %}"></script>
-</head>
-<body>
-<h1 id="title">title</h1>
-<input type="button" value="hello" id="btn"/>
+{% extends 'classification/base.html' %}
 
-</body>
-</html>
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <h1>ライトノベル分類器</h1>
+
+            <form id="text" method="POST" action="/classification/sample/" >
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="exampleTextarea">小説を貼り付けてください</label>
+                    <textarea class="form-control" name="message" id="exampleTextarea" rows="20"></textarea>
+                </div>
+                <button class="btn-primary btn" type="submit">分類</button>
+            </form>
+
+            <h2 id="answer">この小説は({{ answer }})に分類されます。</h2>
+        </div>
+    </div>
+</div>
+{% endblock content %}
