@@ -11,12 +11,12 @@
                 {% csrf_token %}
                 <div class="form-group">
                     <label for="exampleTextarea">小説を貼り付けてください</label>
-                    <textarea class="form-control" name="message" id="exampleTextarea" rows="20"></textarea>
+                    <textarea class="form-control" name="message" id="exampleTextarea" rows="20">{{ text }}</textarea>
                 </div>
                 <button class="btn-primary btn" type="submit">分類</button>
             </form>
 
-            <h2 id="answer">この小説は({{ answer }})に分類されます。</h2>
+            <h2 id="answer">この小説は(<span style="color: red">{{ answer }}</span>)に分類されます。</h2>
         </div>
     </div>
 </div>

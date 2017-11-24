@@ -8,9 +8,10 @@ from classification.tools.predict import Predictor
 
 class SampleView(TemplateView):
     template_name = 'classification/index.html'
+    context = {}
 
     def get(self, request, *args, **kwargs):
-        return render(request, 'classification/index.html')
+        return render(request, 'classification/index.html', context=self.context)
 
     def post(self, request):
         manager = MessageManager(CabochaParser())
@@ -21,10 +22,9 @@ class SampleView(TemplateView):
         words = mes.bags
         prediction = predictor.predict(words)
         print(prediction)
-        ctx = {
-            'answer': prediction
-        }
-        return self.render_to_response(context=ctx)
+        self.context['answer'] = prediction
+        self.context['text'] = text
+        return self.render_to_response(context=self.context)
 
 
 def func(request):
