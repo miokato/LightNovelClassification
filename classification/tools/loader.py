@@ -70,6 +70,7 @@ class Book:
     def __init__(self):
         self.category = str()
         self.title = str()
+        self.body = str()
         self.ncode = str()
         self.chapters = list()
 
@@ -91,13 +92,10 @@ class BookManager:
             category_dir = os.path.join(self.base_path, str(book.category))
             if not os.path.exists(category_dir):
                 os.mkdir(category_dir)
-            title_dir = os.path.join(category_dir, book.ncode)
-            if not os.path.exists(title_dir):
-                os.mkdir(title_dir)
-            for i, chapter in enumerate(book.chapters):
-                file = title_dir + '/chapter{}.txt'.format(i)
-                with open(file, 'wt') as f:
-                    f.write(chapter)
+            file = os.path.join(category_dir, book.title)
+            file += '.txt'
+            with open(file, 'wt') as f:
+                f.write(book.body)
 
     def load(self, category):
         category = os.path.join(self.base_path, category)
@@ -139,7 +137,7 @@ class FetchBook:
 
     def get_body(self, books_info, category):
         books = list()
-        for book_info in books_info:
+        for i, book_info in enumerate(books_info):
             book = Book()
             book.category = category
             for url in book_info.urls:
@@ -150,8 +148,11 @@ class FetchBook:
                 book.title = soup.title.text
                 book.ncode = book_info.ncode
                 body = soup.find('div', id='novel_honbun')
+                book.body += body.text
                 book.chapters.append(body.text)
-            books.append(book)
+            if book.title:
+                books.append(book)
+                print('add {} book to category {}'.format(i, book.category))
         return books
 
 
@@ -160,7 +161,7 @@ if __name__ == '__main__':
     categories = ['異世界', '現実世界', 'ハイファンタジー', '純文学']
     for category in categories:
         query.category = category
-        query.novel_cnt_limit = 200
+        query.novel_cnt_limit = 2
         query.char_cnt_min = 2000
         query.char_cnt_max = 6000
         url = query.create_url()
