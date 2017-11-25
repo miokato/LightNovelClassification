@@ -1,51 +1,8 @@
 from gensim import corpora
 from gensim import models
-from sklearn.linear_model import LogisticRegression
-from sklearn.neural_network import MLPClassifier
-from sklearn.svm import SVC
-from sklearn.model_selection import train_test_split
-from sklearn import grid_search
-from sklearn.externals import joblib
 
 from classification.tools.parser import MessageManager, CabochaParser
 from classification.tools.loader import BookManager
-
-
-class Trainer:
-    def __init__(self):
-        self.corpus_manager = CorpusManager()
-        self.X_train = None
-        self.X_test = None
-        self.y_train = None
-        self.y_test = None
-
-    def create_dataset(self):
-        # dataset作成
-        lsi_corpus = self.corpus_manager.create_corpus()
-        l_novel_dict = {}
-        l_novel_dict['data'] = []
-        l_novel_dict['target'] = []
-        l_novel_dict['target_name'] = []
-
-        for doc, label in zip(lsi_corpus, self.corpus_manager.labels):
-            vecs = [v[1] for v in doc]
-            l_novel_dict['data'].append(vecs)
-            l_novel_dict['target'].append(label)
-        self.X_train, self.X_test, self.y_train, self.y_test = train_test_split(l_novel_dict['data'],
-                                                            l_novel_dict['target'],
-                                                            random_state=50)
-
-    def train(self):
-        path = 'classification/data/models/novel_clf_model.pkl'
-        svc = SVC()
-        cs = [0.001, 0.01, 0.1, 1, 10]
-        gammas = [0.001, 0.01, 0.1, 1]
-        parameters = {'kernel': ['rbf'], 'C': cs, 'gamma': gammas}
-        clf = grid_search.GridSearchCV(svc, parameters)
-        clf.fit(self.X_train, self.y_train)
-        joblib.dump(clf, path)
-
-        return clf
 
 
 class CorpusManager:
@@ -72,8 +29,8 @@ class CorpusManager:
         dictionary = self.creator.create_dict(documents)
         corpus = self.creator.create_corpus(documents, dictionary)
         tfidf = self.creator.create_tfidf(corpus)
-        lsi = self.creator.create_lsi(tfidf, dictionary)
-        return lsi
+        lsi_corpus = self.creator.create_lsi(tfidf, dictionary)
+        return lsi_corpus, self.labels
 
 
 class CorpusCreator:
@@ -114,10 +71,3 @@ class CorpusCreator:
         return lsi_curpus
 
 
-if __name__ == '__main__':
-    trainer = Trainer()
-    trainer.create_dataset()
-
-    clf = trainer.train()
-    score = clf.score(trainer.X_test, trainer.y_test)
-    print('Test accuracy is {}%'.format(score*100))

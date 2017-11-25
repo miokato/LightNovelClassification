@@ -1,14 +1,8 @@
 from gensim import corpora
 from gensim import models
-from sklearn.linear_model import LogisticRegression
-from sklearn.neural_network import MLPClassifier
-from sklearn.svm import SVC
-from sklearn.model_selection import train_test_split
-from sklearn import grid_search
 from sklearn.externals import joblib
 
 from classification.tools.parser import MessageManager, CabochaParser
-from classification.tools.loader import BookManager
 
 
 class Predictor:
