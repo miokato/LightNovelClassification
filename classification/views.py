@@ -11,6 +11,7 @@ class SampleView(TemplateView):
     context = {}
 
     def get(self, request, *args, **kwargs):
+        self.context.clear()
         return render(request, 'classification/index.html', context=self.context)
 
     def post(self, request):
