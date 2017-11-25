@@ -13,7 +13,8 @@ from classification.tools.loader import BookManager
 
 class Predictor:
     def __init__(self):
-        self.category_map = {1: '異世界', 2: '現実世界', 4: '純文学'}
+        self.category_map = {1: '異世界', 2: '現実世界', 3: '純文学', 4: '歴史', 5: '推理',
+                             6: 'ホラー', 7: 'アクション', 8: 'コメディー', 9: '宇宙', 10: 'ＶＲゲーム'}
         self.model_path = 'classification/data/models/novel_clf_model.pkl'
         self.dict_path = 'classification/data/corpus/novel_clf.dict'
         self.corpus_path = 'classification/data/corpus/novel_clf.mm'

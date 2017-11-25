@@ -92,7 +92,7 @@ class BookManager:
             category_dir = os.path.join(self.base_path, str(book.category))
             if not os.path.exists(category_dir):
                 os.mkdir(category_dir)
-            file = os.path.join(category_dir, book.title)
+            file = os.path.join(category_dir, book.ncode)
             file += '.txt'
             with open(file, 'wt') as f:
                 f.write(book.body)
@@ -158,12 +158,13 @@ class FetchBook:
 
 if __name__ == '__main__':
     query = NovelQuery()
-    categories = ['異世界', '現実世界', 'ハイファンタジー', '純文学']
+    categories = ['異世界', '現実世界', '純文学', '歴史', '推理',
+                  'ホラー', 'アクション', 'コメディー', '宇宙', 'ＶＲゲーム']
     for category in categories:
         query.category = category
-        query.novel_cnt_limit = 2
+        query.novel_cnt_limit = 100
         query.char_cnt_min = 2000
-        query.char_cnt_max = 6000
+        query.char_cnt_max = 10000
         url = query.create_url()
         manager = BookManager()
         books = manager.fetch_books(url, query.category_num)

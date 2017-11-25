@@ -56,8 +56,9 @@ class CorpusManager:
         self.labels = []
 
     def create_corpus(self):
-        raw_data_list = ['101', '102', '104']
-        target_mapper = {'101': 1, '102': 2, '103': 3, '104': 4}
+        raw_data_list = ['101', '102', '104', '303', '304', '305', '306', '307', '401', '402']
+        target_mapper = {'101': 1, '102': 2, '104': 3, '303': 4, '304': 5,
+                         '305': 6, '306': 7, '307': 8, '401': 9, '402': 10}
         documents = []
         for raw_data in raw_data_list:
             files = self.file_manager.load(raw_data)
@@ -116,6 +117,7 @@ class CorpusCreator:
 if __name__ == '__main__':
     trainer = Trainer()
     trainer.create_dataset()
+
     clf = trainer.train()
     score = clf.score(trainer.X_test, trainer.y_test)
-    print(score)
+    print('Test accuracy is {}%'.format(score*100))
