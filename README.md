@@ -1,1 +1,3 @@
-LightNovelClassification
+# LightNovelClassification
+
+Using Character Based CNN
